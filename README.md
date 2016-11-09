@@ -298,7 +298,7 @@ W ramce poniżej znajdują się możliwe komunikaty błędów. W przypadku ich w
 (Dropbox) Niepoprawny secret key -> porównaj wartość klucza Secret.Key z hasłem użytym na smartfonie
 ```
 
-####6. Jednoczesne używanie wersji [Simple CGM 2009](https://github.com/woznica1970/simple-cgm) oraz wersji [Simple CGM 2009 Edycja Szkolna](https://github.com/woznica1970/simple-cgm-school)####
+####Jednoczesne używanie wersji [Simple CGM 2009](https://github.com/woznica1970/simple-cgm) oraz wersji [Simple CGM 2009 Edycja Szkolna](https://github.com/woznica1970/simple-cgm-school)####
 
 - wystarczy skonfigurować jedno wspólne konto dla obu aplikacji w usłudze *[Dropbox](https://www.dropbox.com/)*,
 - należy skonfigurować dwie osobne aplikacje w usłudze *[Azure](https://azure.microsoft.com/pl-pl/free/)*,
