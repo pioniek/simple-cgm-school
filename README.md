@@ -184,7 +184,7 @@ Monitor.Time.End
 
 #### 3. Konfiguracja trybu pracy aplikacji####
 
-Aplikacja **Simple CGM 2009 Edycja Szkolna** może pracować w 2 różnych trybach: **PUBLICZNYM** lub **PRYWATNYM**
+Tak jak już pisałem, aplikacja **Simple CGM 2009 Edycja Szkolna** może pracować w 2 różnych trybach: **publicznym** lub **prywatnym**
 
 - w trybie **publicznym** aplikacja wyświetla rzeczywistą wartość pomiaru glikemii.
 - w trybie **prywatnym** aplikacje wyświetla losowo generowaną wartość glikemii w przedziale normy.
@@ -217,7 +217,7 @@ Ustawienie klucza *Monitor.Restrictions* na *False*, powoduje, że aplikacja bę
 - dzień, który ma być **częściowo publiczny** np. dzień szkolny, przyjmuje wartość: **1**
 
 ```
-powyższy ciąg cyfr:
+poniższy ciąg cyfr:
 0;1;1;1;1;1;0 
 oznacza:
 - tryb całkowicie prywatny w niedzielę i sobotę, 
@@ -297,6 +297,18 @@ W ramce poniżej znajdują się możliwe komunikaty błędów. W przypadku ich w
 (Dropbox) Niepoprawny access token -> błędna wartość klucza Dropbox.Access.Token
 (Dropbox) Niepoprawny secret key -> porównaj wartość klucza Secret.Key z hasłem użytym na smartfonie
 ```
+
+####6. Jednoczesne używanie wersji [Simple CGM 2009](https://github.com/woznica1970/simple-cgm) oraz wersji [Simple CGM 2009 Edycja Szkolna](https://github.com/woznica1970/simple-cgm-school)####
+
+- wystarczy skonfigurować jedno wspólne konto dla obu aplikacji w usłudze *[Dropbox](https://www.dropbox.com/)*,
+- należy skonfigurować dwie osobne aplikacje w usłudze *[Azure](https://azure.microsoft.com/pl-pl/free/)*,
+- obie aplikacje mogą za to używać tych samych wartości dla kluczy:
+ - **_Mongo.Connection.String_**
+ - **_Mongo.Database_**
+ - **_Mongo.Collection_**
+ - **_Dropbox.Access.Token_**
+ - **_Dropbox.File.Path_**
+- zalecam ustawienie w obu aplikacjach różnych wartości dla klucza **_Secret.Key_**
 
 Jeżeli znajdziesz w powyższym opisie jakieś błędy lub nieścisłości, dziękuję za przesłanie wiadomości na <a href="mailto:simple.cgm.2009@gmail.com" title="Mariusz Woźnica">ten adres email</a>.
 
