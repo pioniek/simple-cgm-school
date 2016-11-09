@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Open CGM School</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="shortcut icon" type="image/x-icon" href="Images/favicon.ico" />
+    <link href='styles/kendo.common.min.css' rel='stylesheet' type='text/css'/>
+    <script src="js/cgm.open.school.min.js?ver=161109.1700"></script>
+</head>
+<body>
+
+    <div id="monitor-view" data-role="view" data-title="Monitor" data-layout="default-layout" data-init="monitor_init" data-show="monitor_show">
+        <div data-role="content" style="font-weight: bold; text-align: center;">
+            <div id="monitor-header" style="display: none;">
+                <div class="monitor-message" style="display: none;"></div>
+                <div style="padding: 1em 2em 0em 2em;">
+                    <div style="float: left; width: 25%; padding-top: 0.1em;">
+                        <div style="font-size: .75em;" class="km-state-disabled">z przed</div>
+                        <div style="margin-bottom: .75em;"><span class="monitor-timespan" style="font-size: 1em;"></span>&nbsp;min</div>
+                        <div style="font-size: .75em;" class="km-state-disabled">zmiana</div>
+                        <div><span class="monitor-svgspan" style="font-size: 1em;"></span>&nbsp;mg</div>
+                    </div>
+                    <div class="monitor-sgv" style="float: left; font-size: 5em; width: 50%;"></div>
+                    <div style="float: left; font-size: 1em; width: 25%; text-align: left; padding-top: 1em;">
+                        <span class="monitor-icon1 k-font-icon k-i-arrow-s" style="font-size: 2em;">&nbsp;</span>
+                        <span class="monitor-icon2 k-font-icon k-i-arrow-s" style="font-size: 2em;">&nbsp;</span>
+                    </div>
+                </div>
+            </div>
+            <div id="monitor-nodata" style="display: none;">
+                <div class="monitor-message" style="color: crimson;">Brak danych</div>
+            </div>
+        </div>
+        <div class="km-widget km-header">
+            <nav data-role="navbar">
+                <h1 data-role="button" data-icon="action" data-click="app_fetch_data">Odświeżanie</h1>
+            </nav>
+        </div>
+    </div>
+
+    <div id="settings-view" data-role="view" data-title="Ustawienia" data-layout="default-layout" data-init="settings_init" data-show="settings_show" data-before-hide="settings_save">
+        <ul data-role="listview" data-style="inset" data-type="group">
+            <li>
+                <ul>
+                    <li>
+                        <div>
+                            <ul id="settings-datasource" class="km-navbar">
+                                <li>Dropbox
+                                </li>
+                                <li>&nbsp;&nbsp;Azure&nbsp;&nbsp;
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <ul id="settings-skin" class="km-navbar">
+                                <li>Dzień
+                                </li>
+                                <li>&nbsp;Noc&nbsp;
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="thresholds">Norma min:
+                                 <input id="norm_min" class="inputNumber" />
+                    </li>
+                    <li class="thresholds">Norma max:
+                                 <input id="norm_max" class="inputNumber" />
+                    </li>
+                    <li class="thresholds">Hipoglikemia:
+                                <input id="alert_hipo" class="inputNumber" />
+                    </li>
+                    <li class="thresholds">Hiperglikemia:
+                                <input id="alert_hiper" class="inputNumber" />
+                    </li>
+                    <li>
+                        <label>
+                            Secret Key:
+                                <input id="settings-key" type="password" value="password" />
+                        </label>
+                    </li>
+                    <li>
+                        <div style="text-align: center;">
+                            <a data-role="button" data-icon="toprated" data-click="settings_save">Zapisz</a>
+                            <a data-role="button" data-icon="settings" data-click="settings_clear_storage">Reset&nbsp;</a>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <p id="errorMessage" class="app_message_notification error-message" style="display:none;"></p>
+    </div>
+
+    <div id="about-view" data-role="view" data-title="Informacje" data-layout="default-layout" data-init="about_init" data-show="about_show">
+        <div data-role="content" style="text-align: unset;">
+            <div id="licence"></div>
+        </div>
+    </div>
+
+    <div id="default-layout" data-role="layout" data-id="default-layout">
+        <header data-role="header">
+            <nav data-role="navbar">
+                <span id="title" data-role="view-title"></span>
+                <a class="monitor-demo" data-role="button" data-icon="home" data-enable="false" data-align="right" style="display:none"></a>
+                <a class="monitor-active" data-role="button" data-icon="camera" data-enable="false" data-align="right" style="display:none"></a>
+            </nav>
+        </header>
+        <footer data-role="footer">
+            <div id="default-tabstrip">
+                <a href="#monitor-view" data-icon="camera">Monitor</a>
+                <a href="#settings-view" data-icon="settings">Ustawienia</a>
+                <a href="license.html" data-icon="info">Informacje</a>
+            </div>
+        </footer>
+    </div>
+
+</body>
+</html>
