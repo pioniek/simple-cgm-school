@@ -4,8 +4,8 @@
     <title>Open CGM School</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <link rel="shortcut icon" type="image/x-icon" href="Images/favicon.ico" />
-    <link href='styles/kendo.common.min.css' rel='stylesheet' type='text/css'/>
-    <script src="js/cgm.open.school.min.js?ver=161111.1600"></script>
+    <link href='styles/kendo.common.min.css' rel='stylesheet' type='text/css' />
+    <script src="js/cgm.open.school.min.js?ver=161209.1215"></script>
 </head>
 <body>
 
@@ -20,20 +20,23 @@
                         <div style="font-size: .75em;" class="km-state-disabled">zmiana</div>
                         <div><span class="monitor-svgspan" style="font-size: 1em;"></span>&nbsp;mg</div>
                     </div>
-                    <div class="monitor-sgv" style="float: left; font-size: 5em; width: 50%;"></div>
+                    <div id="svg" class="monitor-sgv" style="float: left; font-size: 5em; width: 50%;"></div>
                     <div style="float: left; font-size: 1em; width: 25%; text-align: left; padding-top: 1em;">
                         <span class="monitor-icon1 k-font-icon k-i-arrow-s" style="font-size: 2em;">&nbsp;</span>
                         <span class="monitor-icon2 k-font-icon k-i-arrow-s" style="font-size: 2em;">&nbsp;</span>
                     </div>
                 </div>
+                <div class="monitor-alert-message" style="display: none;"></div>
             </div>
             <div id="monitor-nodata" style="display: none;">
                 <div class="monitor-message" style="color: crimson;">Brak danych</div>
             </div>
         </div>
         <div class="km-widget km-header">
+            <div id="nextUpdateTime" style="margin: 0.7rem; font-size: 0.75rem;"></div>
             <nav data-role="navbar">
-                <h1 data-role="button" data-icon="action" data-click="app_fetch_data">Odświeżanie</h1>
+                <h1 id="buttonFetchData" data-role="button" data-icon="refresh" data-click="app_fetch_data" style="width: 95%;">Aktualizacja</h1>
+                <h1 id="buttonStopAlarm" data-role="button" data-icon="volume" data-click="monitor_stop_alarm" style="width: 95%; display: none;">Stop alarm</h1>
             </nav>
         </div>
     </div>
@@ -61,18 +64,6 @@
                             </ul>
                         </div>
                     </li>
-                    <li class="thresholds">Norma min:
-                                 <input id="norm_min" class="inputNumber" />
-                    </li>
-                    <li class="thresholds">Norma max:
-                                 <input id="norm_max" class="inputNumber" />
-                    </li>
-                    <li class="thresholds">Hipoglikemia:
-                                <input id="alert_hipo" class="inputNumber" />
-                    </li>
-                    <li class="thresholds">Hiperglikemia:
-                                <input id="alert_hiper" class="inputNumber" />
-                    </li>
                     <li>
                         <label>
                             Secret Key:
@@ -85,19 +76,66 @@
                             <a data-role="button" data-icon="settings" data-click="settings_clear_storage">Reset&nbsp;</a>
                         </div>
                     </li>
+                    <li class="thresholds toRight"><span>Norma min:</span>
+                        <input id="norm_min" class="inputNumber" />
+                    </li>
+                    <li class="thresholds toRight"><span>Norma max:</span>
+                        <input id="norm_max" class="inputNumber" />
+                    </li>
+                    <li class="thresholds toRight"><span>Hipoglikemia:</span>
+                        <input id="alert_hipo" class="inputNumber" />
+                    </li>
+                    <li class="thresholds toRight"><span>Hiperglikemia:</span>
+                        <input id="alert_hiper" class="inputNumber" />
+                    </li>
+                    <li id="alarmEnabled" style="display: none">
+                        <label>
+                            <span id="alarmSwitch">Alarm:</span>
+                            <input id="settings-alarm" />
+                        </label>
+                    </li>
+                    <li id="alarmMode" style="display: none">
+                        <label>
+                            <span id="alarmModeSwitch">Tonacja klasyczna:</span>
+                            <input id="settings-alarmMode" />
+                        </label>
+                    </li>
+                    <li id="alarmTest" class="toRight" style="display: none">
+                        <span>Test dźwięku:
+                        </span>
+                        <span style="text-align: right;">
+                            <a id="runAlarmTest" data-role="button" data-icon="sounds" data-click="settings_run_alarm">Start</a>
+                            <a id="stopAlarmTest" data-role="button" data-icon="stop" data-click="settings_stop_alarm" style="display: none;">Stop</a>
+                        </span>
+                    </li>
+                    <li>
+                        <label>
+                            <span>Aktualizacja automatyczna:</span>
+                            <input id="settings-fetchdata" />
+                        </label>
+                    </li>
+                    <li id="fetchdataInterval" class="toRight" style="display: none"><span>Co ile minut:</span>
+                        <input id="settings-fetchInterval" class="inputNumber" />
+                    </li>
+                    <li id="deviceInfoLabel" style="display: none;">
+                        <label id="deviceInfo"></label>
+                    </li>
                 </ul>
             </li>
         </ul>
-        <p id="errorMessage" class="app_message_notification error-message" style="display:none;"></p>
     </div>
 
     <div id="default-layout" data-role="layout" data-id="default-layout">
         <header data-role="header">
             <nav data-role="navbar">
+                <a data-role="button" data-icon="refresh" data-align="left" data-click="app_reload" style="margin-right:2px;"></a>
+                <a id="runMonitorAlarmTest" data-role="button" data-icon="sounds" data-click="monitor_run_alarm" data-align="left" style="display: none"></a>
+                <a id="stopMonitorAlarmTest" data-role="button" data-icon="stop" data-click="monitor_stop_alarm" data-align="left" style="display: none"></a>
                 <span id="title" data-role="view-title"></span>
-                <a class="monitor-demo" data-role="button" data-icon="home" data-enable="false" data-align="right" style="display:none"></a>
-                <a class="monitor-active" data-role="button" data-icon="camera" data-enable="false" data-align="right" style="display:none"></a>
+                <a class="monitor-demo" data-role="button" data-icon="home" data-enable="false" data-align="right" style="display: none"></a>
+                <a class="monitor-active" data-role="button" data-icon="camera" data-enable="false" data-align="right" style="display: none"></a>
             </nav>
+            <div id="errorMessage" class="app_message_notification error-message" style="display: none;"></div>
         </header>
         <footer data-role="footer">
             <div id="default-tabstrip">
@@ -107,6 +145,20 @@
             </div>
         </footer>
     </div>
+
+    <audio id="audioPlayerControl" style="display: none;">
+        <source src="sounds/alarm.mp3" />
+        Your browser does not support the audio element.
+    </audio>
+
+    <script>
+        function worker_background_function() {
+            if (fetch_data()) {
+                app_next_update();
+                app_fetch_data();
+            }
+        }
+    </script>
 
 </body>
 </html>
